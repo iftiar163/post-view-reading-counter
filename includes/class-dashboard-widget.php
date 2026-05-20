@@ -25,7 +25,7 @@ class PVC_Dashboard_Widget {
     public static function register_widget() {
         wp_add_dashboard_widget(
             'pvc_dashboard_widget',
-            __('Post View Stats', 'post-view-counter'),
+            __('Post View Stats', 'post-views-counter'),
             [__CLASS__, 'render_widget']
         );
     }
@@ -42,7 +42,7 @@ class PVC_Dashboard_Widget {
         $post_count = (int) $total_posts->publish;
 
         // Try to get cached stats first
-        $total_views = wp_cache_get('pvc_total_views', 'post-view-counter');
+        $total_views = wp_cache_get('pvc_total_views', 'post-views-counter');
         if (false === $total_views) {
             global $wpdb;
 
@@ -57,11 +57,11 @@ class PVC_Dashboard_Widget {
             );
 
             // Cache for 1 hour
-            wp_cache_set('pvc_total_views', $total_views, 'post-view-counter', 3600);
+            wp_cache_set('pvc_total_views', $total_views, 'post-views-counter', 3600);
         }
 
         // Try to get cached reading time first
-        $total_time = wp_cache_get('pvc_total_time', 'post-view-counter');
+        $total_time = wp_cache_get('pvc_total_time', 'post-views-counter');
         if (false === $total_time) {
             global $wpdb;
 
@@ -76,7 +76,7 @@ class PVC_Dashboard_Widget {
             );
 
             // Cache for 1 hour
-            wp_cache_set('pvc_total_time', $total_time, 'post-view-counter', 3600);
+            wp_cache_set('pvc_total_time', $total_time, 'post-views-counter', 3600);
         }
 
         return [

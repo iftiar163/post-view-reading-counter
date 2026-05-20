@@ -1,4 +1,4 @@
-=== Post View Counter ===
+=== Post Views Counter ===
 Contributors: iftiarhossain
 Tags: post views, reading time, analytics, engagement, tracking
 Requires at least: 5.0
@@ -39,7 +39,7 @@ Post View Counter is a lightweight, efficient WordPress plugin that automaticall
 **Manual Installation:**
 
 1. Download the plugin from WordPress.org
-2. Upload the `post-view-counter` folder to `/wp-content/plugins/`
+2. Upload the `post-views-counter` folder to `/wp-content/plugins/`
 3. Activate the plugin through the **Plugins** menu in WordPress
 4. The plugin will start tracking immediately
 

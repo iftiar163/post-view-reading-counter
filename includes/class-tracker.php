@@ -97,8 +97,8 @@ class PVC_Tracker {
         update_post_meta($post_id, PVC_META_TIME, $new_total);
 
         // Clear the dashboard widget cache so it shows updated stats
-        wp_cache_delete('pvc_total_time', 'post-view-counter');
-        wp_cache_delete('pvc_total_views', 'post-view-counter');
+        wp_cache_delete('pvc_total_time', 'post-views-counter');
+        wp_cache_delete('pvc_total_views', 'post-views-counter');
 
         // Send a success response with the new total reading time
         wp_send_json_success(['reading_time' => $new_total]);
@@ -160,8 +160,8 @@ class PVC_Tracker {
         update_post_meta($post_id, PVC_META_VIEWS, $new_views);
 
         // Clear the dashboard widget cache so it shows updated stats
-        wp_cache_delete('pvc_total_views', 'post-view-counter');
-        wp_cache_delete('pvc_total_time', 'post-view-counter');
+        wp_cache_delete('pvc_total_views', 'post-views-counter');
+        wp_cache_delete('pvc_total_time', 'post-views-counter');
 
         // Send a success response with the new view count
         wp_send_json_success(['views' => $new_views]);

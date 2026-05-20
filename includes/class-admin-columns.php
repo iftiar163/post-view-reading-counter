@@ -30,8 +30,8 @@ class PVC_Admin_Columns {
         unset($columns['date']);
 
         // Add our custom columns
-        $columns['pvc_views'] = __('👁️ Views', 'post-view-counter');
-        $columns['pvc_reading_time'] = __('⏱️ Read Time', 'post-view-counter');
+        $columns['pvc_views'] = __('👁️ Views', 'post-views-counter');
+        $columns['pvc_reading_time'] = __('⏱️ Read Time', 'post-views-counter');
         // Add the 'date' column back at the end
         $columns['date'] = $date;
         return $columns;    
