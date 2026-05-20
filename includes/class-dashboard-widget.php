@@ -41,27 +41,43 @@ class PVC_Dashboard_Widget {
         $total_posts = wp_count_posts('post');
         $post_count = (int) $total_posts->publish;
 
-        global $wpdb;
+        // Try to get cached stats first
+        $total_views = wp_cache_get('pvc_total_views', 'post-view-counter');
+        if (false === $total_views) {
+            global $wpdb;
 
-        $total_views = (int) $wpdb->get_var(
-            $wpdb->prepare(
-                "SELECT SUM(CAST(meta_value AS UNSIGNED))
-                 FROM {$wpdb->postmeta}
-                 WHERE meta_key = %s
-                 AND meta_value != ''",
-                PVC_META_VIEWS
-            )
-        );
+            $total_views = (int) $wpdb->get_var(
+                $wpdb->prepare(
+                    "SELECT SUM(CAST(meta_value AS UNSIGNED))
+                     FROM {$wpdb->postmeta}
+                     WHERE meta_key = %s
+                     AND meta_value != ''",
+                    PVC_META_VIEWS
+                )
+            );
 
-        $total_time = (int) $wpdb->get_var(
-            $wpdb->prepare(
-                "SELECT SUM(CAST(meta_value AS UNSIGNED))
-                 FROM {$wpdb->postmeta}
-                 WHERE meta_key = %s
-                 AND meta_value != ''",
-                PVC_META_TIME
-            )
-        );
+            // Cache for 1 hour
+            wp_cache_set('pvc_total_views', $total_views, 'post-view-counter', 3600);
+        }
+
+        // Try to get cached reading time first
+        $total_time = wp_cache_get('pvc_total_time', 'post-view-counter');
+        if (false === $total_time) {
+            global $wpdb;
+
+            $total_time = (int) $wpdb->get_var(
+                $wpdb->prepare(
+                    "SELECT SUM(CAST(meta_value AS UNSIGNED))
+                     FROM {$wpdb->postmeta}
+                     WHERE meta_key = %s
+                     AND meta_value != ''",
+                    PVC_META_TIME
+                )
+            );
+
+            // Cache for 1 hour
+            wp_cache_set('pvc_total_time', $total_time, 'post-view-counter', 3600);
+        }
 
         return [
             'post_count' => $post_count,
@@ -149,7 +165,7 @@ class PVC_Dashboard_Widget {
             </div>
 
             <div class="pvc-widget-footer">
-                <a href="<?php echo admin_url('edit.php'); ?>" class="pvc-footer-link">
+                <a href="<?php echo esc_attr(admin_url('edit.php')); ?>" class="pvc-footer-link">
                     View all posts →
                 </a>
             </div>

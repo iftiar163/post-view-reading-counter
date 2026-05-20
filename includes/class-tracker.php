@@ -58,7 +58,8 @@ class PVC_Tracker {
      */
     public static function track_reading_time() {
         // Verify nonce for security
-        if( !isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'pvc_track_view') ) {
+        $nonce = isset($_POST['nonce']) ? wp_unslash($_POST['nonce']) : '';
+        if( !$nonce || !wp_verify_nonce($nonce, 'pvc_track_view') ) {
             wp_send_json_error(['message' => 'Invalid nonce'], 403);
         }
 
@@ -68,7 +69,7 @@ class PVC_Tracker {
         }
 
         // Sanitize and validate post ID
-        $post_id = isset($_POST['post_id']) ? (int) sanitize_text_field($_POST['post_id']) : 0;
+        $post_id = isset($_POST['post_id']) ? (int) sanitize_text_field(wp_unslash($_POST['post_id'])) : 0;
 
         if($post_id === 0) {
             wp_send_json_error(['message' => 'Invalid post ID'], 400);
@@ -80,7 +81,7 @@ class PVC_Tracker {
         }
 
         // Sanitize and validate time spent (in seconds)
-        $time_spent = isset($_POST['time_spent']) ? (int) sanitize_text_field($_POST['time_spent']) : 0;
+        $time_spent = isset($_POST['time_spent']) ? (int) sanitize_text_field(wp_unslash($_POST['time_spent'])) : 0;
 
         if($time_spent < 3 || $time_spent > 1800) {
             wp_send_json_error(['message' => 'Invalid time spent'], 400);
@@ -94,6 +95,10 @@ class PVC_Tracker {
 
         // Store the updated total
         update_post_meta($post_id, PVC_META_TIME, $new_total);
+
+        // Clear the dashboard widget cache so it shows updated stats
+        wp_cache_delete('pvc_total_time', 'post-view-counter');
+        wp_cache_delete('pvc_total_views', 'post-view-counter');
 
         // Send a success response with the new total reading time
         wp_send_json_success(['reading_time' => $new_total]);
@@ -127,7 +132,8 @@ class PVC_Tracker {
      */
     public static function track_view() {
         // Verify nonce for security
-            if( !isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'pvc_track_view') ) {
+        $nonce = isset($_POST['nonce']) ? wp_unslash($_POST['nonce']) : '';
+        if( !$nonce || !wp_verify_nonce($nonce, 'pvc_track_view') ) {
             wp_send_json_error(['message' => 'Invalid nonce'], 403);
         }
 
@@ -137,7 +143,7 @@ class PVC_Tracker {
         }
 
         // Sanitize the post ID
-            $post_id = isset($_POST['post_id']) ? (int) sanitize_text_field($_POST['post_id']) : 0;
+        $post_id = isset($_POST['post_id']) ? (int) sanitize_text_field(wp_unslash($_POST['post_id'])) : 0;
 
         if($post_id === 0) {
             wp_send_json_error(['message' => 'Invalid post ID'], 400);
@@ -152,6 +158,10 @@ class PVC_Tracker {
         $new_views = $current_views + 1;
 
         update_post_meta($post_id, PVC_META_VIEWS, $new_views);
+
+        // Clear the dashboard widget cache so it shows updated stats
+        wp_cache_delete('pvc_total_views', 'post-view-counter');
+        wp_cache_delete('pvc_total_time', 'post-view-counter');
 
         // Send a success response with the new view count
         wp_send_json_success(['views' => $new_views]);

@@ -1,103 +1,160 @@
-# Post View Counter
+=== Post View Counter ===
+Contributors: iftiarhossain
+Tags: post views, reading time, analytics, engagement, tracking
+Requires at least: 5.0
+Requires PHP: 7.4
+Tested up to: 6.9
+Stable tag: 1.0.0
+License: GPL-2.0-or-later
+License URI: https://www.gnu.org/licenses/gpl-2.0-html
 
-A lightweight WordPress plugin that tracks post views and accumulates visitor reading time. Display comprehensive engagement metrics in your admin dashboard and post list columns.
+Track post views and accumulate total reading time from visitors. Display engagement metrics in your admin dashboard and post list columns.
 
-## Features
+== Description ==
 
-- **📊 View Tracking**: Automatically track the number of visitors viewing each post
-- **⏱️ Reading Time Tracking**: Measure and accumulate the actual time visitors spend reading posts
-- **📈 Admin Dashboard Widget**: Beautiful analytics widget showing total posts, views, and cumulative reading time
-- **📋 Post Columns**: Display views and reading time directly in the post list table
-- **🎯 Smart Filtering**: Excludes administrators and editors from view counts (tracks real visitors only)
-- **⚡ Lightweight**: Minimal database impact with efficient AJAX tracking
-- **🔒 Secure**: Built with WordPress security standards (nonce verification, sanitization, proper escaping)
-- **📱 Responsive**: Dashboard widget adapts beautifully to all screen sizes
+Post View Counter is a lightweight, efficient WordPress plugin that automatically tracks how many times each post is viewed and measures the total reading time accumulated from all visitors. Perfect for bloggers, content creators, and site owners who want to understand their audience engagement at a glance.
 
-## How It Works
+**Key Features:**
 
-### View Tracking
-- JavaScript tracks when a visitor loads a post (after 2-second bounce filter)
-- AJAX sends view count to the server
-- Count is stored in post meta and incremented
-- Prevents double-counting in the same session using sessionStorage
+* **View Tracking** - Automatically count the number of unique sessions viewing each post with intelligent bounce filtering
+* **Reading Time Analytics** - Measure actual time visitors spend reading your posts
+* **Admin Dashboard Widget** - Beautiful analytics widget showing total views, posts, and cumulative reading time
+* **Post List Columns** - Display views and reading time directly in the post list for quick reference
+* **Smart User Filtering** - Automatically excludes administrators and editors from view counts to track real visitor engagement
+* **Session-based Counting** - Prevents artificially inflating counts by tracking views per session, not per page load
+* **Security First** - Built with WordPress security standards including nonce verification, input sanitization, and proper output escaping
+* **Lightweight & Efficient** - Minimal database footprint with optimized AJAX requests and prepared statements
+* **Zero Configuration** - Works automatically after activation, no settings to configure
+* **Responsive Design** - Dashboard widget looks perfect on all devices and screen sizes
 
-### Reading Time Tracking
-- JavaScript measures actual time spent on the post
-- Records time when visitor leaves the page or switches tabs
-- Requires minimum 3 seconds (filters bounces)
-- Caps at 30 minutes (prevents outliers)
-- Time is accumulated across all visitors and stored per post
-- Dashboard shows total reading time across all posts
+== Installation ==
 
-## Dashboard Widget
+1. Log in to your WordPress admin panel
+2. Navigate to **Plugins > Add New**
+3. Search for "Post View Counter"
+4. Click **Install Now** and then **Activate**
+5. Visit your **Dashboard** to see the new analytics widget
+6. Go to **Posts** to see the new Views and Read Time columns
 
-The admin dashboard includes a beautiful analytics widget displaying:
-- **Published Posts**: Total number of published posts
-- **Total Views**: Sum of all views across all posts
-- **Total Read Time**: Cumulative reading time from all visitors across all posts (shown as "X hrs Y mins")
+**Manual Installation:**
 
-## Post List Columns
+1. Download the plugin from WordPress.org
+2. Upload the `post-view-counter` folder to `/wp-content/plugins/`
+3. Activate the plugin through the **Plugins** menu in WordPress
+4. The plugin will start tracking immediately
 
-Two new columns appear in the post list table:
-- **👁️ Views**: Number of views for each post
-- **⏱️ Read Time**: Total accumulated reading time for each post (clickable to sort)
+== Frequently Asked Questions ==
 
-## Installation
+= Does this plugin track admin views? =
 
-1. Download the plugin files
-2. Upload to `/wp-content/plugins/post-view-counter/`
-3. Activate in WordPress admin under Plugins
-4. Visit the dashboard to see the new analytics widget
-5. Go to Posts to see the new columns
+No. By design, administrators, editors, authors, and contributors are excluded from view counts. The plugin tracks only real visitor views, giving you accurate engagement metrics.
 
-## Usage
+= How accurate is the reading time? =
 
-Once activated, the plugin works automatically:
-- New posts will start tracking views and reading time immediately
-- Visit a post from the frontend to trigger tracking
-- Check the admin dashboard for real-time engagement metrics
-- Sort posts by views or reading time in the post list
+Reading time is measured from actual visitor activity on your posts. It begins after a 2-second initial delay (to filter out bounces) and stops when visitors leave the page or switch tabs. Times are capped at 30 minutes to exclude outliers.
 
-## Security Features
+= Will this slow down my site? =
 
-- ✅ Nonce verification on all AJAX requests
-- ✅ Input sanitization and validation
-- ✅ Proper output escaping
-- ✅ User role filtering (admins/editors excluded)
-- ✅ Post status verification (only published posts tracked)
+No. The plugin uses efficient AJAX requests and minimal database queries. All tracking is done asynchronously, and there's no noticeable impact on site performance.
 
-## Compatibility
+= How is the data stored? =
 
-- **Minimum WordPress**: 5.0
-- **Minimum PHP**: 7.4
-- **Browser Support**: All modern browsers (Chrome, Firefox, Safari, Edge)
+All data is stored using WordPress standard post meta. No custom database tables are created. This keeps your database clean and easy to manage.
 
-## Database
+= Can I reset the view counts? =
 
-The plugin stores data in post meta using these keys:
-- `_pvc_view_count`: Total view count for a post
-- `_pvc_reading_time`: Total reading time in seconds for a post
+Currently, view and reading time data cannot be reset through the plugin interface. However, you can manually delete the data through phpMyAdmin or by removing the post meta keys `_pvc_view_count` and `_pvc_reading_time`.
 
-No custom tables are created. Data is stored using WordPress standard post meta.
+= What browsers are supported? =
 
-## Performance
+The plugin works on all modern browsers including Chrome, Firefox, Safari, Edge, and Opera. It requires JavaScript to be enabled for tracking to work.
 
-- Uses efficient AJAX requests to minimize server load
-- SessionStorage prevents duplicate counting in same session
-- Database queries use proper prepared statements
-- No significant impact on site performance
+= Does this plugin use cookies? =
 
-## Uninstallation
+The plugin uses browser sessionStorage (not cookies) to prevent double-counting views from the same visitor session. SessionStorage is cleared when the browser closes.
 
-Simply deactivate and delete the plugin. All plugin data is automatically cleaned up from the database.
+= Is my visitor data private? =
 
-## FAQ
+Yes. All data is stored locally in your WordPress database. No information is sent to external servers or third parties.
 
-**Q: Will this track admin views?**
-A: No. By default, administrators, editors, authors, and contributors are excluded from view counts. Only real visitors are tracked.
+== How It Works ==
 
-**Q: How accurate is the reading time?**
-A: It measures actual time spent on the page. It starts after a 2-second delay (to filter bounces) and stops when they leave or switch tabs. Times are capped at 30 minutes to filter outliers.
+**View Tracking Process:**
+1. When a visitor loads a post, JavaScript on the page waits 2 seconds (bounce filter) before sending a tracking request
+2. An AJAX request is sent to your WordPress backend
+3. The view count for that post is incremented in the post meta
+4. SessionStorage tracks that this post has been counted in the current session to prevent duplicates
+
+**Reading Time Tracking Process:**
+1. JavaScript monitors how long a visitor spends on the page
+2. Timing begins after the initial 2-second bounce delay
+3. Timing ends when the visitor leaves the page or switches browser tabs
+4. Only intervals of 3+ seconds are counted (minimum threshold)
+5. Maximum 30-minute intervals are recorded (filters outliers like tabs left open)
+6. The accumulated time is added to the post's total reading time meta
+
+**Dashboard Widget:**
+The admin dashboard displays:
+- Total number of published posts
+- Sum of all views across all posts
+- Cumulative reading time from all visitors (formatted as "X hours Y minutes")
+
+**Post List Columns:**
+Two new columns in the Posts list show:
+- Views: Total view count for each post
+- Read Time: Total accumulated reading time (click to sort posts)
+
+== Technical Details ==
+
+**Database:**
+- `_pvc_view_count` - Stores the total view count for a post
+- `_pvc_reading_time` - Stores total reading time in seconds for a post
+- Uses standard WordPress post meta (no custom tables)
+
+**Security:**
+- All AJAX endpoints verify nonces for CSRF protection
+- User input is sanitized and validated
+- Output is properly escaped for display
+- User roles are verified to exclude administrators and editors
+- Only published posts are tracked
+
+**Performance:**
+- Efficient prepared statements for all database queries
+- Asynchronous AJAX requests don't block user interaction
+- SessionStorage prevents redundant database calls
+- Minimal CSS and JavaScript payload
+- No external API calls or third-party services
+
+== Changelog ==
+
+= 1.0.0 =
+* Initial release
+* View tracking with bounce filtering
+* Reading time analytics with min/max thresholds
+* Admin dashboard widget with engagement metrics
+* Post list columns for views and reading time
+* Smart user role filtering
+* Security-first implementation with nonce verification
+* Comprehensive documentation and FAQ
+
+== Support ==
+
+For support, feature requests, or bug reports, please visit the plugin's WordPress.org support forum. Make sure to:
+
+1. Describe your issue clearly
+2. List your WordPress version and PHP version
+3. Let us know which plugins are active
+4. Share any error messages from your browser console (press F12)
+
+== Credits ==
+
+Developed by Iftiar Hossain
+
+== License ==
+
+This plugin is licensed under the GPL-2.0-or-later license. You are free to use, modify, and distribute this plugin under the terms of the GNU General Public License.
+
+For more information about the GPL, visit: https://www.gnu.org/licenses/gpl-2.0-html
 
 **Q: Does this slow down my site?**
 A: No. The tracking uses efficient AJAX requests and minimal JavaScript. The impact is negligible.

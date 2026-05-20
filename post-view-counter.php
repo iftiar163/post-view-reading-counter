@@ -5,13 +5,14 @@
  * Description: Track post views and accumulate total reading time from visitors. Display engagement metrics in the admin dashboard and post list columns.
  * Version:     1.0.0
  * Author:      Iftiar Hossain
- * Author URI:  https://yourwebsite.com
+ * Author URI:  https://iftiarhossain.com/
  * License:     GPL-2.0-or-later
  * License URI: https://www.gnu.org/licenses/gpl-2.0-html
  * Text Domain: post-view-counter
  * Domain Path: /languages
  * Requires at least: 5.0
  * Requires PHP: 7.4
+ * Tested up to: 6.9
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
